@@ -1,7 +1,6 @@
 package com.True.Care.controller;
 
-import java.util.logging.Logger;
-
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,11 +20,10 @@ public class DepartmentsController {
     @Autowired
     private DepartmentsRepository departmentsRepository;
 
-    Logger logger = LoggerFactory.getLogger(DepartmentsController.class)
+    Logger logger = LoggerFactory.getLogger(DepartmentsController.class);
 
     @PostMapping(path = "/addDepartment", consumes = "application/json")
     public ResponseEntity<String> addDepartment(@RequestBody Departments department) {
-
         try {
             departmentsRepository.save(department);
             return ResponseEntity.ok("Saved");
