@@ -1,4 +1,4 @@
-package com.True.Care.utils;
+package com.True.Care.util;
 
 import java.security.Key;
 import java.util.Date;
