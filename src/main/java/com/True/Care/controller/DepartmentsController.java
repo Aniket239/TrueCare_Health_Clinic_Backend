@@ -11,19 +11,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.True.Care.modal.Departments;
 import com.True.Care.repository.DepartmentsRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
-@RequestMapping(path = "/")
+@RequestMapping(path = "/department")
 public class DepartmentsController {
+
     @Autowired
     private DepartmentsRepository departmentsRepository;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     Logger logger = LoggerFactory.getLogger(DepartmentsController.class);
 
-    @PostMapping(path = "/addDepartment", consumes = "application/json")
+    @PostMapping(path = "/add", consumes = "application/json")
     public ResponseEntity<String> addDepartment(@RequestBody Departments department) {
+        try {
+            logger.info("Received department: {}", objectMapper.writeValueAsString(department));
+        } catch (Exception e) {
+            logger.warn("Failed to log department JSON", e);
+        }
         try {
             departmentsRepository.save(department);
             return ResponseEntity.ok("Saved");

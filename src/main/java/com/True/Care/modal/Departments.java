@@ -9,16 +9,16 @@ import jakarta.persistence.Id;
 public class Departments {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer department_id;
     private String name;
     private String description;
     
-    public Integer getId(){
-        return id;
+    public Integer getDepartmentId(){
+        return department_id;
     }
 
-    public void setId(Integer id){
-        this.id = id;
+    public void setDepartmentId(Integer department_id){
+        this.department_id = department_id;
     }
 
     public String getName(){
