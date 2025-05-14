@@ -12,6 +12,7 @@ public class Departments {
     private Integer department_id;
     private String name;
     private String description;
+    private String departmentPicture;
     
     public Integer getDepartmentId(){
         return department_id;
@@ -34,5 +35,13 @@ public class Departments {
 
     public void setDescription( String description){
         this.description = description;
+    }
+
+    public String getDepartmentPicture() {
+        return departmentPicture;
+    }
+    
+    public void setDepartmentPicture(String departmentPicture) {
+        this.departmentPicture = departmentPicture;
     }
 }
