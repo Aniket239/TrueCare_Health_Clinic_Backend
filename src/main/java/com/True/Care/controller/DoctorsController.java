@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,16 +55,15 @@ public class DoctorsController {
     }
 
     @GetMapping(path = "/doctors/{id}")
-    public ResponseEntity<Map<String, Object>> getDoctor(@PathVariable ("id") Integer id){
+    public ResponseEntity<Map<String, Object>> getDoctor(@PathVariable("id") Integer id) {
         try {
             Optional<Doctors> doctor = doctorsRespository.findById(id);
-            if(!doctor.isPresent()){
+            if (!doctor.isPresent()) {
                 response.put("success", false);
                 response.put("message", "doctor not found");
                 response.put("data", null);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-            }
-            else{
+            } else {
                 response.put("success", true);
                 response.put("message", "doctor found successfully");
                 response.put("data", doctor);
@@ -72,11 +72,13 @@ public class DoctorsController {
         } catch (Exception e) {
             response.put("success", false);
             response.put("error", "Something went wrong.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);        }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping(path = "/doctors")
     public ResponseEntity<Map<String, Object>> getDoctors() {
+        response.clear();
         try {
             List<Doctors> doctorsArray = new ArrayList<>();
             doctorsRespository.findAll().forEach(doctorsArray::add);
@@ -90,4 +92,39 @@ public class DoctorsController {
         }
     }
 
+    @DeleteMapping(path = "doctor/{id}")
+    public ResponseEntity<Map<String, Object>> deleteDoctor(@PathVariable("id") Integer id) {
+        response.clear();
+        try {
+            Optional<Doctors> doctorOptional = doctorsRespository.findById(id);
+            if (!doctorOptional.isPresent()) {
+                response.put("success", false);
+                response.put("message", "no doctor found with this id");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+            response.put("success", true);
+            response.put("message", "doctor deleted successfully");
+            doctorsRespository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "Something went wrong.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @DeleteMapping(path = "doctors")
+    public ResponseEntity<Map<String, Object>> deleteAllDoctors() {
+        response.clear();
+        try {
+            doctorsRespository.deleteAll();
+            response.put("seccess", true);
+            response.put("message", "all doctors deleted");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", "Something went wrong.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

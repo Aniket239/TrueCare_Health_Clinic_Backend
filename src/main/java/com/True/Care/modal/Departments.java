@@ -9,17 +9,18 @@ import jakarta.persistence.Id;
 public class Departments {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer department_id;
+    private Integer departmentId;
     private String name;
     private String description;
     private String departmentPicture;
+    private String slug;
     
     public Integer getDepartmentId(){
-        return department_id;
+        return departmentId;
     }
 
-    public void setDepartmentId(Integer department_id){
-        this.department_id = department_id;
+    public void setDepartmentId(Integer departmentId){
+        this.departmentId = departmentId;
     }
 
     public String getName(){
@@ -44,4 +45,13 @@ public class Departments {
     public void setDepartmentPicture(String departmentPicture) {
         this.departmentPicture = departmentPicture;
     }
+
+    public String getSlug() {
+        return slug;
+    }
+    
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+    
 }

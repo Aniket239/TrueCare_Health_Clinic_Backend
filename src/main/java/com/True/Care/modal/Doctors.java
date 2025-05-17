@@ -18,7 +18,7 @@ public class Doctors {
 
     private String name;
     @ManyToOne
-    @JoinColumn(name = "department_id", nullable = false)
+    @JoinColumn(name = "departmentId", nullable = false)
     private Departments department;
 
     private LocalTime start_time;
