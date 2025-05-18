@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "encryption.aes-key",
+    "type": "java.lang.String",
+    "description": "A description for 'encryption.aes-key'"
+  },
+  {
+    "name": "app.upload.base-url",
+    "type": "java.lang.String",
+    "description": "A description for 'app.upload.base-url'"
+  },
+  {
+    "name": "app.upload.directory",
+    "type": "java.lang.String",
+    "description": "A description for 'app.upload.directory'"
+  }
+]}

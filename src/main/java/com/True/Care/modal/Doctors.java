@@ -1,5 +1,6 @@
 package com.True.Care.modal;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,7 @@ public class Doctors {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "doctor_id")
     private Integer doctor_id;
 
     private String name;
@@ -23,6 +25,7 @@ public class Doctors {
 
     private LocalTime start_time;
     private LocalTime end_time;
+    @Column(columnDefinition = "TEXT")
     private String about;
     private Integer experience;
     private String profile_image;
@@ -68,27 +71,27 @@ public class Doctors {
         this.end_time = end_time;
     }
 
-    public String getAbout(){
+    public String getAbout() {
         return about;
     }
 
-    public void setAbout(String about){
+    public void setAbout(String about) {
         this.about = about;
     }
 
-    public Integer getExperience(){
+    public Integer getExperience() {
         return experience;
     }
-    
-    public void setExperience(Integer experience){
+
+    public void setExperience(Integer experience) {
         this.experience = experience;
     }
 
-    public String getProfile_image(){
+    public String getProfile_image() {
         return profile_image;
     }
-    
-    public void setProfile_image(String profile_image){
+
+    public void setProfile_image(String profile_image) {
         this.profile_image = profile_image;
     }
 }
