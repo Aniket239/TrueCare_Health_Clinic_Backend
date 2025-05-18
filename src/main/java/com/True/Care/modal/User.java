@@ -56,7 +56,7 @@ public class User {
         this.email = email;
     }
 
-    public String getPhone_number() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
