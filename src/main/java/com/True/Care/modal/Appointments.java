@@ -1,6 +1,7 @@
 package com.True.Care.modal;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import jakarta.persistence.*;
@@ -20,7 +21,9 @@ public class Appointments {
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctors doctor;
 
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(unique = true)
     private String appointmentId;
@@ -28,7 +31,17 @@ public class Appointments {
     private LocalDate date;
     private LocalTime time;
 
-    // Getters and Setters
+    @Column
+    private LocalDateTime createdDateTime;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDateTime = LocalDateTime.now();
+    }
+    
+    public LocalDateTime getCreatedDateTime(){
+        return createdDateTime;
+    }
 
     public Integer getId() {
         return id;
@@ -54,12 +67,12 @@ public class Appointments {
         this.doctor = doctor;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getAppointmentId() {

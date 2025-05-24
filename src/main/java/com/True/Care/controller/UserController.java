@@ -22,6 +22,8 @@ import com.True.Care.repository.UserRepository;
 import com.True.Care.util.Encryption;
 import com.True.Care.util.JwtUtil;
 
+import io.jsonwebtoken.JwtException;
+
 @Controller // <-- Use this if you want JSON responses by default
 @RequestMapping(path = "/") // This means URL's start with /demo (after Application pat)
 public class UserController {
@@ -71,8 +73,14 @@ public class UserController {
             String token = authHeader.substring(7); // Remove "Bearer "
 
             // 2. Validate token and get encrypted email
-            String encryptedEmail = jwtUtil.validateTokenAndRetrieveSubject(token);
-
+            String encryptedEmail;
+            try {
+                encryptedEmail = jwtUtil.validateTokenAndRetrieveSubject(token);
+            } catch (JwtException e) {
+                response.put("success", false);
+                response.put("message", "Invalid or expired token");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+            }
             // 3. Decrypt email
             String email = encryption.decrypt(encryptedEmail);
 
@@ -91,6 +99,7 @@ public class UserController {
 
     @PostMapping(path = "/login", consumes = "application/json")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestBody User loginRequest) {
+        response.clear();
         User user = userRepository.findByEmail(loginRequest.getEmail());
         if (user == null) {
             response.put("status", false);
