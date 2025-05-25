@@ -101,9 +101,10 @@ public class DepartmentsController {
         }
     }
 
-    @PutMapping(path = "/department/{id}", consumes = "application/json")
+    @PutMapping(path = "/department/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, Object>> updateDepartment(@PathVariable("id") Integer id,
-            @RequestBody Departments updateDepartmentData) {
+            @RequestParam(value = "department_picture", required = false) MultipartFile file,
+            @ModelAttribute Departments updateDepartmentData) {
         response.clear();
         try {
             Optional<Departments> departmentOptional = departmentsRepository.findById(id);
@@ -116,6 +117,15 @@ public class DepartmentsController {
             Departments department = departmentOptional.get();
             department.setName(updateDepartmentData.getName());
             department.setDescription(updateDepartmentData.getDescription());
+
+            if (file != null && !file.isEmpty()) {
+                String uploadedFileUrl = FileUploadHelper.uploadFile(file, uploadBaseUrl);
+
+                if (uploadedFileUrl != null) {
+                    logger.info("File uploaded successfully: {}", uploadedFileUrl);
+                    department.setDepartmentPicture(uploadedFileUrl);
+                }
+            }
             departmentsRepository.save(department);
 
             response.put("success", true);
@@ -144,8 +154,7 @@ public class DepartmentsController {
     }
 
     @GetMapping(path = "/department/slug")
-    public ResponseEntity<Map<String, Object>> getDepartmentBySlug(@RequestParam ("slug") String slug)
-    {
+    public ResponseEntity<Map<String, Object>> getDepartmentBySlug(@RequestParam("slug") String slug) {
         response.clear();
         try {
             Departments department = departmentsRepository.findByslug(slug);
@@ -200,7 +209,8 @@ public class DepartmentsController {
             for (Departments department : allDepartments) {
                 if (doctorsRepository.existsByDepartment_DepartmentId(department.getDepartmentId())) {
                     response.put("success", false);
-                    response.put("message", "Cannot delete all departments: One or more departments are associated with doctors.");
+                    response.put("message",
+                            "Cannot delete all departments: One or more departments are associated with doctors.");
                     return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
                 }
             }
